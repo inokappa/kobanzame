@@ -1,3 +1,4 @@
 #!/usr/bin/env ruby
 
-require "kobanzame"
+require 'kobanzame'
+require_relative '../lib/kobanzame/cli'

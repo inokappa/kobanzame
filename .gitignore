@@ -9,3 +9,8 @@
 
 # rspec failure tracking
 .rspec_status
+*.pid
+*.log
+.envrc
+.ruby-version
+vendor/

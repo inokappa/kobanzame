@@ -1,0 +1,25 @@
+{
+  "containers": [
+    {
+      "name": "ecs-cli_worker_1",
+      "check_interval": "1",
+      "report_format": "text"
+    }
+  ],
+  "metrics": [
+    {
+      "name": "cloudwatch",
+      "namespace": "foo-namespace"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "cloudwatch_logs",
+      "log_group": "foo-group",
+      "log_stream_prefix": "foo-stream"
+    },
+    {
+      "name": "stdout"
+    }
+  ]
+}
