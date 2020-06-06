@@ -25,9 +25,8 @@ module Kobanzame
             log_group_name: @log_group_name,
             log_stream_name_prefix: log_stream_name
           })['log_streams'][0]['upload_sequence_token']
-        rescue Aws::CloudWatchLogs::ServiceError
-          puts $!.message
-          raise
+        rescue Aws::CloudWatchLogs::ServiceError => ex
+          raise $!.message
         end
       end
 
@@ -44,8 +43,7 @@ module Kobanzame
         begin
           cwlog.put_log_events(event)
         rescue Aws::CloudWatchLogs::ServiceError
-          puts $!.message
-          raise
+          raise $!.message
         end
       end
     end

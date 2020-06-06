@@ -48,13 +48,13 @@ module Kobanzame
 
     def run
       logger.info 'Waiting for starting target container.'
-      container_name = Kobanzame::Config.select_target_container(config)
+      container_conf = Kobanzame::Config.select_conf(config, 'container')
       i = 1
       container_info = ''
       loop do
         containers = describe_target_container
         logger.warn 'Could not get all container information.' if containers.nil?
-        container_info = containers['Containers'].find { |c| c['Name'] == container_name }
+        container_info = containers['Containers'].find { |c| c['Name'] == container_conf['name'] }
         break if !container_info.nil? && container_info['DockerId'] != ''
         # waiting for 120s
         i += 1
@@ -62,7 +62,7 @@ module Kobanzame
           logger.fatal 'Could not get the information of the batch container.'
           exit 1
         end
-        sleep 1
+        sleep container_conf['check_interval']
       end
 
       logger.info 'Collecting target container metrics.'
@@ -79,8 +79,8 @@ module Kobanzame
         i += 1
         sleep 1
       end
-      re = Kobanzame::Report.new(result)
-      logger.info re.text_report
+      repo = Kobanzame::Report.new(result)
+      Kobanzame::Output.new(config).publish(repo)
       exit 0
     end
 
@@ -115,7 +115,7 @@ module Kobanzame
       usage 
     end
 
-    def memory_usage
+    def memory_used
       memories = @result.map { |a| a[2] }
       return '' if memories.nil?
       usage = {}
@@ -125,15 +125,27 @@ module Kobanzame
       usage
     end
 
-    def text_report(params = nil)
-      # Sample
-      # -> REPORT TaskID:xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx Duration: xxxxxms Memory Used: xxxxxMiB(Ave)/xxxxxMiB(Max) CPU Usage: xxx%(Ave)/xxx%(Max) 
-      memory_used = "Memory Used: #{memory_usage['average']}MiB(ave)/#{memory_usage['max']}MiB(max)"
-      cpu_used= "CPU Usage: #{cpu_usage['average']}%(ave)/#{cpu_usage['max']}%(max)"
+    def text(params = nil)
+      m = "Memory Used: #{memory_used['average']}MiB(ave)/#{memory_used['max']}MiB(max)"
+      c = "CPU Usage: #{cpu_usage['average']}%(ave)/#{cpu_usage['max']}%(max)"
       # task_id = params['task_id']
     
       # "REPORT TaskID:#{task_id} Duration: #{d['duration']}ms, #{memory_used}, #{cpu_usage}"
-      "REPORT Duration: #{duration['duration']}ms, #{memory_used}, #{cpu_used}"
+      "REPORT Duration: #{duration['duration']}ms, #{m}, #{c}"
+    end
+
+    def json(params = nil)
+      report = {}
+      
+      report['duration'] = duration
+      report['memory_used'] = memory_used
+      report['cpu_usage'] = cpu_usage
+
+      res = {}
+      res['report'] = report
+      res['task_id'] = params['task_id']
+      res['docker_name'] = params['docker_name']
+      res.to_json
     end
   end
 end
@@ -161,9 +173,24 @@ module Kobanzame
       config_hash
     end
 
-    def self.select_target_container(config)
+    def self.select_conf(config, key)
       konf = config[:kobanzame_config]
-      konf['containers'][0]['name']
+      konf[key]
+    end
+
+    def self.select_containers_conf(config)
+      konf = config[:kobanzame_config]
+      konf['container']
+    end
+
+    def self.select_metrics_conf(config)
+      konf = config[:kobanzame_config]
+      konf['metrics']
+    end
+
+    def self.select_outputs_conf(config)
+      konf = config[:kobanzame_config]
+      konf['outputs']
     end
   end
 end

@@ -1,11 +1,9 @@
 {
-  "containers": [
-    {
-      "name": "ecs-cli_worker_1",
-      "check_interval": "1",
-      "report_format": "text"
-    }
-  ],
+  "container": {
+    "name": "ecs-cli_worker_1",
+    "check_interval": "1",
+    "report_format": "text"
+  },
   "metrics": [
     {
       "name": "cloudwatch",
