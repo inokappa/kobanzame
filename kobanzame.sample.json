@@ -1,7 +1,7 @@
 {
   "container": {
     "name": "ecs-cli_worker_1",
-    "check_interval": "1",
+    "check_interval": 1,
     "report_format": "text"
   },
   "metrics": [
@@ -13,7 +13,7 @@
   "outputs": [
     {
       "name": "cloudwatch_logs",
-      "log_group": "foo-group",
+      "log_group_name": "foo-group",
       "log_stream_prefix": "foo-stream"
     },
     {

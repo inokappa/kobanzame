@@ -1,12 +1,13 @@
 require 'aws-sdk-cloudwatchlogs'
 
 module Kobanzame
-  module Outputs
-    class CloudWatchLogs
-      def initialize(params)
-        @log_group_name = params['log_group_name']
-        @log_stream_prefix = params['log_stream_name_prefix']
-        @container_name = params['container_name']
+  module Output
+    class CloudwatchLogs
+      def initialize(output_conf, container_conf, params)
+        @log_group_name = output_conf['log_group_name']
+        @log_stream_prefix = output_conf['log_stream_prefix']
+        @container_name = container_conf['name']
+        @format = container_conf['report_format']
         @task_id = params['task_id']
       end
 
@@ -25,7 +26,7 @@ module Kobanzame
             log_group_name: @log_group_name,
             log_stream_name_prefix: log_stream_name
           })['log_streams'][0]['upload_sequence_token']
-        rescue Aws::CloudWatchLogs::ServiceError => ex
+        rescue Aws::CloudWatchLogs::Errors::ServiceError
           raise $!.message
         end
       end
@@ -36,13 +37,13 @@ module Kobanzame
           log_stream_name: log_stream_name,
           log_events: [{
             timestamp: (Time.now.utc.to_f.round(3) * 1000).to_i,
-            message: result
+            message: result.send(@format)
           }],
           sequence_token: upload_sequence_token
         }
         begin
           cwlog.put_log_events(event)
-        rescue Aws::CloudWatchLogs::ServiceError
+        rescue Aws::CloudWatchLogs::Errors::ServiceError
           raise $!.message
         end
       end

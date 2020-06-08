@@ -1,6 +1,5 @@
 require 'optparse'
-require 'kobanzame/version'
-require 'kobanzame/collector'
+require 'kobanzame'
 
 op = OptionParser.new
 op.version = Kobanzame::VERSION
@@ -8,7 +7,7 @@ op.version = Kobanzame::VERSION
 opts = {
   config: 'kobanzame.json',
   pid_file: 'kobanzame.pid',
-  log_file: 'kobanzame.log',
+  log_file: STDOUT,
   daemonize: false,
   debug: false
 }
@@ -41,5 +40,5 @@ rescue OptionParser::InvalidOption => ex
   exit 1
 end
 
-k = Kobanzame::Collector.new(opts)
+k = Kobanzame::Supervisor.new(opts)
 k.start
