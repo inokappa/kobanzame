@@ -19,10 +19,8 @@ module Kobanzame
           eval "Kobanzame::Output::#{mod.camelize}.new(output_conf, @container_conf, @params).publish(result)"
           logger.info("Sent information to #{mod}")
         rescue LoadError => ex
-          puts ex
           logger.warn("Could not load #{mod} module.")
         rescue => ex
-          puts ex
           logger.warn("Could not send information to #{mod}.")
         end
       end

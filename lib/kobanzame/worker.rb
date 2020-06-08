@@ -32,15 +32,19 @@ module Kobanzame
       [Time.now.strftime('%s%L').to_i, cpu_usage, memory_usage]
     end
 
-    def run
+    def load_container_config
+      Kobanzame::Config.select_conf(config, 'container')
+    end
+
+    def describe_container_info
+      cf = load_container_config
       logger.info 'Waiting for starting target container.'
-      container_conf = Kobanzame::Config.select_conf(config, 'container')
       i = 1
       container_info = ''
       loop do
         containers = describe_target_container
         logger.warn 'Could not get all container information.' if containers.nil?
-        container_info = containers['Containers'].find { |c| c['Name'] == container_conf['name'] }
+        container_info = containers['Containers'].find { |c| c['Name'] == cf['name'] }
         break if !container_info.nil? && container_info['DockerId'] != ''
         # waiting for 120s
         i += 1
@@ -48,9 +52,13 @@ module Kobanzame
           logger.fatal 'Could not get the information of the batch container.'
           exit 1
         end
-        sleep container_conf['check_interval'].to_i
+        sleep cf['check_interval'].to_i
       end
+      container_info
+    end
 
+    def run
+      cf = load_container_config
       logger.info 'Collecting target container metrics.'
       i = 1
       result = []
@@ -63,7 +71,7 @@ module Kobanzame
         logger.debug metrics if config[:debug]
         logger.info "Collected #{result.length} metrics..." if i % 10 == 0
         i += 1
-        sleep container_conf['check_interval'].to_i
+        sleep cf['check_interval'].to_i
       end
       params = Kobanzame::Config.generate_task_params(container_info)
       repo = Kobanzame::Report.new(result, params)
