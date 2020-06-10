@@ -14,6 +14,10 @@ module Kobanzame
     def publish(result)
       load_output_modules.each do |mod|
         output_conf = @outputs_conf.select { |c| c['name'] == mod }.last
+        if output_conf.nil?
+          logger.warn("Skip output to #{mod}")
+          next
+        end
         begin
           require "kobanzame/outputs/#{mod}"
           class_name = "Kobanzame::Output::#{mod.camelize}"

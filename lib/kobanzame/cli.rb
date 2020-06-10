@@ -24,7 +24,7 @@ op.on('-p', '--pid-file PATH', "pid file path (default: #{opts[:pid_file]})") {|
   opts[:pid_file] = v
 }
 
-op.on('-l', '--log-file PATH', "log file path (default: #{opts[:log_file]})") {|v|
+op.on('-l', '--log-file PATH', "log file path (default: STDOUT)") {|v|
   opts[:log_file] = v
 }
 

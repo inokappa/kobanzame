@@ -15,7 +15,6 @@ module Kobanzame
 
       def publish(result)
         data = write_metric_data(result)
-        puts data
         begin
           cw.put_metric_data(data)
         rescue Aws::CloudWatch::Errors::ServiceError
@@ -63,7 +62,6 @@ module Kobanzame
       end
 
       def timestamp(t)
-        p t
         DateTime.strptime((t.to_i/1000).to_s, '%s').iso8601
       end
     end
