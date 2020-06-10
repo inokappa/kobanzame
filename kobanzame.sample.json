@@ -13,9 +13,6 @@
       "name": "cloudwatch_logs",
       "log_group_name": "foo-group",
       "log_stream_prefix": "foo-stream"
-    },
-    {
-      "name": "stdout"
     }
   ]
 }
