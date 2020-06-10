@@ -4,12 +4,10 @@
     "check_interval": 1,
     "report_format": "text"
   },
-  "metrics": [
-    {
+  "metrics": {
       "name": "cloudwatch",
-      "namespace": "foo-namespace"
-    }
-  ],
+      "namespace": "Custom/Kobanzame"
+  },
   "outputs": [
     {
       "name": "cloudwatch_logs",

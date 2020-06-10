@@ -28,12 +28,16 @@ module Kobanzame
       memory_usage = calc_memory_size(stat['memory_stats'])
       cpu_usage = calc_cpu_percent(stat['cpu_stats'], stat['precpu_stats'])
       
-      # Return format: ['Container Id', 'Datetime', 'Used CPU unit', 'Used Memory size']
+      # Return format: ['Datetime', 'Used CPU unit', 'Used Memory size']
       [Time.now.strftime('%s%L').to_i, cpu_usage, memory_usage]
     end
 
     def load_container_config
       Kobanzame::Config.select_conf(config, 'container')
+    end
+
+    def load_metrics_config
+      Kobanzame::Config.select_conf(config, 'metrics')
     end
 
     def describe_container_info
@@ -54,26 +58,38 @@ module Kobanzame
         end
         sleep cf['check_interval'].to_i
       end
+      container_info['_check_interval'] = cf['check_interval'].to_i
       container_info
     end
 
     def run
-      cf = load_container_config
+      container_info = describe_container_info
+      mt = load_metrics_config
+      params = Kobanzame::Config.generate_task_params(container_info)
       logger.info 'Collecting target container metrics.'
       i = 1
       result = []
       nilbox = []
+      metbox = []
       until @stop
         metrics = describe_target_container_metrics(container_info.dig('DockerId')) 
         nilbox << nil if metrics.nil?
         break if nilbox.size > 3 # metrics が 3 回取れなかったら, ループを抜ける
-        result << metrics unless metrics.nil?
+        if !metrics.nil?
+          result << metrics
+          metbox << metrics
+        end
         logger.debug metrics if config[:debug]
-        logger.info "Collected #{result.length} metrics..." if i % 10 == 0
+        if i % 10 == 0
+          logger.info "Collected #{result.length} metrics..."
+          if !mt.nil? || !mt == {}
+            Kobanzame::Metrics.new(config, params).publish(metbox)
+            metbox = []
+          end
+        end
         i += 1
-        sleep cf['check_interval'].to_i
+        sleep container_info['_check_interval']
       end
-      params = Kobanzame::Config.generate_task_params(container_info)
       repo = Kobanzame::Report.new(result, params)
       Kobanzame::Outputs.new(config, params).publish(repo)
       exit 0

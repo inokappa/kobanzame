@@ -24,5 +24,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.0"
 
   spec.add_dependency 'aws-sdk-cloudwatchlogs'
+  spec.add_dependency 'aws-sdk-cloudwatch'
   spec.add_dependency 'serverengine'
 end
