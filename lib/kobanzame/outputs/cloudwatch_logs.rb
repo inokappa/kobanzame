@@ -15,22 +15,6 @@ module Kobanzame
         @cwlog ||= Aws::CloudWatchLogs::Client.new
       end
 
-      def log_stream_name
-        return @task_id if @log_stream_prefix.nil?
-        @log_stream_prefix + '/' + @container_name + '/' + @task_id
-      end
-
-      def upload_sequence_token
-        begin
-          cwlog.describe_log_streams({
-            log_group_name: @log_group_name,
-            log_stream_name_prefix: log_stream_name
-          })['log_streams'][0]['upload_sequence_token']
-        rescue Aws::CloudWatchLogs::Errors::ServiceError
-          raise $!.message
-        end
-      end
-
       def publish(result)
         event = {
           log_group_name: @log_group_name,
@@ -43,6 +27,24 @@ module Kobanzame
         }
         begin
           cwlog.put_log_events(event)
+        rescue Aws::CloudWatchLogs::Errors::ServiceError
+          raise $!.message
+        end
+      end
+
+      private
+
+      def log_stream_name
+        return @task_id if @log_stream_prefix.nil?
+        @log_stream_prefix + '/' + @container_name + '/' + @task_id
+      end
+
+      def upload_sequence_token
+        begin
+          cwlog.describe_log_streams({
+            log_group_name: @log_group_name,
+            log_stream_name_prefix: log_stream_name
+          })['log_streams'][0]['upload_sequence_token']
         rescue Aws::CloudWatchLogs::Errors::ServiceError
           raise $!.message
         end
