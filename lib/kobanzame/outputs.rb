@@ -25,8 +25,8 @@ module Kobanzame
           logger.info("Sent information to #{mod}")
         rescue LoadError
           logger.warn("Could not load #{mod} module.")
-        rescue
-          logger.warn("Could not send information to #{mod}.")
+        rescue => ex
+          logger.warn("Could not send information to #{mod}. Reason: #{ex.message}")
         end
       end
     end

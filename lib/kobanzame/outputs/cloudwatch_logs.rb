@@ -22,9 +22,9 @@ module Kobanzame
           log_events: [{
             timestamp: (Time.now.utc.to_f.round(3) * 1000).to_i,
             message: result.send(@format)
-          }],
-          sequence_token: upload_sequence_token
+          }]
         }
+        event['sequence_token'] = upload_sequence_token if upload_sequence_token != ''
         begin
           cwlog.put_log_events(event)
         rescue Aws::CloudWatchLogs::Errors::ServiceError
@@ -40,14 +40,30 @@ module Kobanzame
       end
 
       def upload_sequence_token
+        return '' if log_streams.empty?
+        log_streams[0]['upload_sequence_token']
+      end
+
+      def log_streams
         begin
-          cwlog.describe_log_streams({
+          res = cwlog.describe_log_streams({
             log_group_name: @log_group_name,
             log_stream_name_prefix: log_stream_name
-          })['log_streams'][0]['upload_sequence_token']
+          })
         rescue Aws::CloudWatchLogs::Errors::ServiceError
           raise $!.message
         end
+
+        begin
+          cwlog.create_log_stream({
+            log_group_name: @log_group_name,
+            log_stream_name: log_stream_name
+          })
+          return []
+        rescue Aws::CloudWatchLogs::Errors::ServiceError
+          raise $!.message
+        end if res['log_streams'].empty?
+        res['log_streams']
       end
     end
   end

@@ -46,7 +46,6 @@ module Kobanzame
           ]
           metric_datas << metric_data
         end
-        puts metric_datas
         metric[:metric_data] = metric_datas.flatten
         metric
       end

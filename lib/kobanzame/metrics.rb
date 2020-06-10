@@ -18,11 +18,9 @@ module Kobanzame
           Object.const_get(class_name).new(@metrics_conf, @params).publish(result)
           logger.info("Sent information to #{mod}")
         rescue LoadError => ex
-          puts ex
           logger.warn("Could not load #{mod} module.")
         rescue => ex
-          puts ex
-          logger.warn("Could not send information to #{mod}.")
+          logger.warn("Could not send information to #{mod}. Reason: #{ex.message}")
         end
       end
     end
