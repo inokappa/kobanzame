@@ -1,8 +1,9 @@
 # Kobanzame
+[![CircleCI](https://circleci.com/gh/inokappa/kobanzame.svg?style=svg)](https://circleci.com/gh/inokappa/kobanzame)
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/kobanzame`. To experiment with that code, run `bin/console` for an interactive prompt.
+## About
 
-TODO: Delete this and the text above, and describe your gem
+Resource monitoring tool for ECS Task.
 
 ## Installation
 
@@ -22,7 +23,34 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Write kobanzame.json.
+
+```json
+{
+  "container": {
+    "name": "batch-worker",
+    "check_interval": 1,
+    "report_format": "text"
+  },
+  "metrics": {
+      "name": "cloudwatch",
+      "namespace": "Custom/Kobanzame"
+  },
+  "outputs": [
+    {
+      "name": "cloudwatch_logs",
+      "log_group_name": "kobanzame-sample",
+      "log_stream_prefix": "kobanzame"
+    }
+  ]
+}
+```
+
+Starting kobanzame.
+
+```sh
+$ kobanzame --config=kobanzame.json
+```
 
 ## Development
 

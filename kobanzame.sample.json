@@ -1,6 +1,6 @@
 {
   "container": {
-    "name": "ecs-cli_worker_1",
+    "name": "batch-worker",
     "check_interval": 1,
     "report_format": "text"
   },
