@@ -39,7 +39,7 @@ module Kobanzame
       c = "CPU Usage: #{cpu_usage['average']}%(ave)/#{cpu_usage['max']}%(max)"
       task_id = @params['task_id']
     
-      "REPORT TaskID:#{task_id} Duration: #{duration['duration']}ms, #{m}, #{c}"
+      "REPORT TaskID: #{task_id} Duration: #{duration['duration']}ms, #{m}, #{c}"
     end
 
     def json
