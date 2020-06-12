@@ -48,7 +48,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.17)
+  bundler (>= 1.9, < 3.0)
   kobanzame!
   rake (~> 10.0)
   rspec (~> 3.0)
