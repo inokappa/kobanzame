@@ -1,7 +1,8 @@
-# Kobanzame
-[![CircleCI](https://circleci.com/gh/inokappa/kobanzame.svg?style=svg)](https://circleci.com/gh/inokappa/kobanzame)
+# Kobanzame [![CircleCI](https://circleci.com/gh/inokappa/kobanzame.svg?style=svg)](https://circleci.com/gh/inokappa/kobanzame)
 
 ## About
+
+![](https://raw.githubusercontent.com/inokappa/kobanzame/master/fish_kobanzame.png)
 
 Resource monitoring tool for ECS Task.
 
