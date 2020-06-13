@@ -27,7 +27,7 @@ module Kobanzame
             'fields': [
               {
                 'title': 'Output',
-                'value': event['detail']['taskArn'],
+                'value': result,
                 'short': false
               },
             ]
