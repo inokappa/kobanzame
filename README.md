@@ -4,7 +4,9 @@
 
 ![](https://raw.githubusercontent.com/inokappa/kobanzame/master/docs/images/fish_kobanzame.png)
 
-Resource monitoring tool for ECS Task.
+Resource monitoring tool for ECS Task. 
+
+It sticks to a Docker container like a `Kobanzame (black shark)` and gets information about the container.
 
 ## Installation
 
