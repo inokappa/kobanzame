@@ -1,12 +1,10 @@
 # Kobanzame [![CircleCI](https://circleci.com/gh/inokappa/kobanzame.svg?style=svg)](https://circleci.com/gh/inokappa/kobanzame)
 
-## About
-
 ![](https://raw.githubusercontent.com/inokappa/kobanzame/master/docs/images/fish_kobanzame.png)
 
-Resource monitoring tool for ECS Task. 
+## About
 
-It sticks to a Docker container like a `Kobanzame (black shark)` and gets information about the container.
+Resource monitoring tool for ECS Task. It sticks to a Docker container like a `Kobanzame (black shark)` and gets information about the container.
 
 ## Installation
 
