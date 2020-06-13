@@ -2,7 +2,7 @@
 
 ## About
 
-![](https://raw.githubusercontent.com/inokappa/kobanzame/master/fish_kobanzame.png)
+![](https://raw.githubusercontent.com/inokappa/kobanzame/master/docs/images/fish_kobanzame.png)
 
 Resource monitoring tool for ECS Task.
 
