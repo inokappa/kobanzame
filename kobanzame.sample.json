@@ -13,6 +13,13 @@
       "name": "cloudwatch_logs",
       "log_group_name": "kobanzame-sample",
       "log_stream_prefix": "kobanzame"
+    },
+    {
+      "name": "slack",
+      "webhook_url": "",
+      "title": "Kobanzame Sample Output",
+      "user_name": "kobanzame-sample",
+      "icon_emoji": "kobanzame-sample"
     }
   ]
 }
