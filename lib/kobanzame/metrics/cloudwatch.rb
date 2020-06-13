@@ -36,12 +36,14 @@ module Kobanzame
               dimensions: dimentions,
               timestamp: timestamp(data[0]),
               value: data[1],
+              unit: 'Percent'
             },
             {
               metric_name: 'Memory Used',
               dimensions: dimentions,
               timestamp: timestamp(data[0]),
               value: data[2],
+              unit: 'Megabits'
             }
           ]
           metric_datas << metric_data
