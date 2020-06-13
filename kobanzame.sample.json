@@ -2,7 +2,7 @@
   "container": {
     "name": "batch-worker",
     "check_interval": 1,
-    "report_format": "text"
+    "report_format": "json"
   },
   "metrics": {
       "name": "cloudwatch",
@@ -19,7 +19,7 @@
       "webhook_url": "",
       "title": "Kobanzame Sample Output",
       "user_name": "kobanzame-sample",
-      "icon_emoji": "kobanzame-sample"
+      "icon_emoji": ":shark:"
     }
   ]
 }

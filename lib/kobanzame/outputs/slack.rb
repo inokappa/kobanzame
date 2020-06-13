@@ -5,14 +5,12 @@ module Kobanzame
   module Output
     class Slack
       def initialize(output_conf, container_conf, params)
-        # @container_name = container_conf['name']
-        # @format = container_conf['report_format']
-        # @task_id = params['task_id']
+        @format = container_conf['report_format']
         @output_conf = output_conf
       end
 
       def publish(result)
-        attachements = result.send(@format)
+        attachements = build_attachements(result.send(@format))
         params = build_params(attachements)
         send(params)
       end
@@ -20,6 +18,12 @@ module Kobanzame
       private
 
       def build_attachements(result)
+        result = build_pretty_json(result) if result.start_with?('{')
+        value = <<-"VALUE"
+```
+#{result}
+```
+        VALUE
         attachments = [
           {
             'fallback': '',
@@ -27,7 +31,7 @@ module Kobanzame
             'fields': [
               {
                 'title': 'Output',
-                'value': result,
+                'value': value,
                 'short': false
               },
             ]
@@ -46,6 +50,11 @@ module Kobanzame
         params
       end
 
+      def build_pretty_json(json_string)
+        hash = JSON.parse(json_string)
+        JSON.pretty_generate(hash)
+      end
+
       def send(build_params)
         uri = URI.parse(ENV['SLACK_WEBHOOK_URL'])
         http = Net::HTTP.new(uri.host, uri.port)
@@ -57,9 +66,8 @@ module Kobanzame
             http.request(request)
           end
         rescue => e
-          puts 'Slack send failure: ' + e.message
+          raise $!.message
         end
-        puts 'ok'
       end
     end
   end

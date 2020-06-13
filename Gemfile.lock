@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    kobanzame (0.0.4)
+    kobanzame (0.0.5)
       aws-sdk-cloudwatch
       aws-sdk-cloudwatchlogs
       serverengine
