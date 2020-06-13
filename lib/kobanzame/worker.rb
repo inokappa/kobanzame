@@ -67,19 +67,28 @@ module Kobanzame
       mt = load_metrics_config
       params = Kobanzame::Config.generate_task_params(container_info)
       logger.info 'Collecting target container metrics.'
+
       i = 1
       result = []
       nilbox = []
       metbox = []
       until @stop
         metrics = describe_target_container_metrics(container_info.dig('DockerId')) 
+        # metrics が 3 回取れなかったら, ループを抜ける
         nilbox << nil if metrics.nil?
-        break if nilbox.size > 3 # metrics が 3 回取れなかったら, ループを抜ける
+        if nilbox.size > 3
+          if !mt.nil? || !mt == {}
+            Kobanzame::Metrics.new(config, params).publish(metbox) unless metbox.empty?
+          end
+          break
+        end
+        #
         if !metrics.nil?
           result << metrics
           metbox << metrics
         end
         logger.debug metrics if config[:debug]
+        #
         if i % 10 == 0
           logger.info "Collected #{result.length} metrics..."
           if !mt.nil? || !mt == {}
@@ -88,8 +97,10 @@ module Kobanzame
           end
         end
         i += 1
+        #
         sleep container_info['_check_interval']
       end
+
       repo = Kobanzame::Report.new(result, params)
       Kobanzame::Outputs.new(config, params).publish(repo)
       exit 0
