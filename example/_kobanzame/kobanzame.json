@@ -1,0 +1,25 @@
+{
+  "container": {
+    "name": "batch-worker",
+    "check_interval": 1,
+    "report_format": "csv"
+  },
+  "metrics": {
+      "name": "cloudwatch",
+      "namespace": "Custom/Kobanzame"
+  },
+  "outputs": [
+    {
+      "name": "cloudwatch_logs",
+      "log_group_name": "kobanzame-sample-dev-batch-worker",
+      "log_stream_name": "batch-worker-resource-statistics"
+    },
+    {
+      "name": "slack",
+      "webhook_url": "",
+      "title": "Kobanzame Sample Output",
+      "user_name": "kobanzame-sample",
+      "icon_emoji": ":shark:"
+    }
+  ]
+}

@@ -55,5 +55,13 @@ module Kobanzame
       res['docker_name'] = @params['docker_name']
       res.to_json
     end
+
+    def csv
+      m = "#{memory_used['average']},#{memory_used['max']}"
+      c = "#{cpu_usage['average']},#{cpu_usage['max']}"
+      task_id = @params['task_id']
+    
+      "#{task_id},#{duration['duration']},#{m},#{c}"
+    end
   end
 end

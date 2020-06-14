@@ -1,0 +1,9 @@
+{
+  "containerOverrides": [
+    {
+      "name": "batch-worker",
+      "workingDirectory": "/app",
+      "command": ["./run.sh", "50"]
+    }
+  ]
+}

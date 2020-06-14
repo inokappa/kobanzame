@@ -1,0 +1,47 @@
+[
+  {
+    "name": "${container-name}",
+    "image": "${container-image}",
+    "memoryReservation": 896,
+    "workingDirectory": "/app",
+    "essential": true,
+    "environment": [],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${awslogs-group}",
+        "awslogs-region": "ap-northeast-1",
+        "awslogs-stream-prefix": "${container-name}"
+      }
+    }
+  },
+  {
+    "name": "${kobanzame-container-name}",
+    "image": "${kobanzame-container-image}",
+    "memoryReservation": 128,
+    "essential": true,
+    "workingDirectory": "/app",
+    "command": ["kobanzame", "--config=kobanzame.json", "--debug"],
+    "environment": [
+      {
+        "name": "SLACK_WEBHOOK_URL",
+        "value": "https://hooks.slack.com/services/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"
+      }
+    ],
+    "stopTimeout": 120,
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${awslogs-group}",
+        "awslogs-region": "ap-northeast-1",
+        "awslogs-stream-prefix": "${kobanzame-container-name}"
+      }
+    },
+    "dependsOn": [
+      {
+        "containerName": "${container-name}",
+        "condition": "START"
+      }
+    ]
+  }
+]

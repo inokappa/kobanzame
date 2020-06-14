@@ -1,0 +1,5 @@
+run.txt
+docker-compose.ecs-local.override.yml
+docker-compose.ecs-local.yml
+test-definition.json
+terraform/terraform.tfstate.d
