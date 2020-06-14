@@ -31,4 +31,9 @@ RSpec.describe Kobanzame::Report do
     expect = '{"report":{"duration":{"duration":10,"unit":"ms"},"memory_used":{"average":133.4,"max":200.621,"unit":"MiB"},"cpu_usage":{"average":62.567,"max":90.3,"unit":"%"}},"task_id":"xxxxxxxx","docker_name":"foo"}'
     expect(@repo.json).to eq expect
   end
+
+  it 'get CSV Report' do
+    expect = "xxxxxxxx,10,133.4,200.621,62.567,90.3"
+    expect(@repo.csv).to eq expect
+  end
 end
