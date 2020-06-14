@@ -36,8 +36,8 @@ module Kobanzame
       private
 
       def log_stream_name
-        return @task_id if @log_stream_prefix.nil? && @log_group_name.nil?
-        return @log_group_name if @log_stream_prefix.nil?
+        return @task_id if @log_stream_prefix.nil? && @log_stream_name.nil?
+        return @log_stream_name if @log_stream_prefix.nil?
         @log_stream_prefix + '/' + @container_name + '/' + @task_id
       end
 
