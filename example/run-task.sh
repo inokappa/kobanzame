@@ -25,10 +25,10 @@ function continue?() {
 case ${1} in
   "dev" )
     MESSAGE="Run Task for \e[37;44;1m $1 \e[m Environment."
-    FARGATE_CLUSTER="kobanzame-sample-dev-batch-worker"
-    FARGATE_TASK_DEFINITION="kobanzame-sample-dev-batch-worker"
-    FARGATE_SUBNETS="subnet-0042d2fd618bdd5a7,subnet-03c8ec744cb07248e"
-    FARGATE_SECURITY_GROUP="sg-05aa6ee7817d1e4a9"
+    FARGATE_CLUSTER=""
+    FARGATE_TASK_DEFINITION=""
+    FARGATE_SUBNETS=""
+    FARGATE_SECURITY_GROUP=""
     COLOR_CODE="\e[36m"
     ;;
   *)
