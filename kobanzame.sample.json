@@ -12,7 +12,8 @@
     {
       "name": "cloudwatch_logs",
       "log_group_name": "kobanzame-sample",
-      "log_stream_prefix": "kobanzame"
+      "log_stream_prefix": "kobanzame",
+      "log_stream_name": "batch-worker-resource-statistics"
     },
     {
       "name": "slack",
