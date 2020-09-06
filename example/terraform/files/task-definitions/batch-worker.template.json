@@ -25,7 +25,7 @@
     "environment": [
       {
         "name": "SLACK_WEBHOOK_URL",
-        "value": "https://hooks.slack.com/services/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"
+        "value": "https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
       }
     ],
     "stopTimeout": 120,
